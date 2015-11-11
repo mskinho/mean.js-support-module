@@ -1,0 +1,77 @@
+<section ng-controller="LocationsController" ng-init="find()">
+  <div class="page-header">
+    <h1>Locations</h1>
+  </div>
+  <div class="col-xs-12">
+    <div class="alert alert-warning text-center" ng-show="!addNew">
+      <a ng-click="addNewLocation()" ng-enabled="selected !== null">Add new location</a>
+    </div>
+  	<form name="newLocationForm" ng-show="addNew" class="form-inline new-location-form" ng-submit="submit(newLocationForm.$valid)" novalidate>
+	  <fieldset>
+	    <div class="form-group" show-errors>
+	      <input name="location" type="text" ng-model="location" id="newLocation" class="form-control" placeholder="Location" required>
+	      <div ng-messages="newLocationForm.location.$error" role="alert">
+	        <p class="help-block error-text" ng-message="required">Location required.</p>
+	      </div>
+	    </div>
+    	<div class="form-group">
+    	  <input type="submit" class="btn btn-default">
+    	</div>
+    	<div class="form-group">
+    	  <input type="button" class="btn btn-default" value="Cancel" ng-click="cancel()">
+    	</div>
+	  </fieldset>
+  	</form>
+  	<table class="table-bordered datagrid">
+    <tr ng-repeat="location in locations" ng-class="{warning: !location.isactive}">
+      <td ng-show="location !== selected">{{location.location}}</td>
+      <td ng-show="location !== selected">{{location.isactive ? "Active" : "Inactive"}}</td>
+      <td ng-show="selected === null && !addNew"><a class="btn btn-primary" ng-click="editLoc(location)">
+	        <i class="glyphicon glyphicon-edit"></i>
+	      </a>
+	      <a class="btn btn-primary" ng-click="delete(location)">
+	        <i class="glyphicon glyphicon-trash"></i>
+	      </a>
+      </td>
+      <td colspan="2" ng-show="selected === location && !addNew">
+	      <form name="editLocationForm" class="form-inline" ng-submit="update(editLocationForm.$valid)" novalidate>
+		      <table>
+		      <tr>
+			      <td>
+			      	<input name="location" type="text" ng-model="editOrig.location" id="editLocation" class="form-control" required>
+			      	<div ng-messages="editLocationForm.location.$error" role="alert">
+			      	  <p class="help-block error-text" ng-message="required">Location required.</p>
+			      	</div>
+		      	  </td>
+		      	  <td>
+		      	  	<input type="checkbox" ng-model="editOrig.isactive" ng-checked="{{loc.isactive}}">
+		      	  </td>
+		      	  <td>
+		      	  	<div class="form-group">
+			    	  <input type="submit" value="Save" class="btn btn-default">
+			    	</div>
+			    	<div class="form-group">
+			    	  <input type="button" class="btn btn-default" value="Cancel" ng-click="cancel($index)">
+			    	</div>
+		      	  </td>
+	      	  </tr>
+		      </table>	
+	      </form>
+      </td>
+      
+    </tr>
+    </table>
+  </div>
+  <style>
+  .new-location-form {
+  	padding: 15px;
+  	padding-left: 0;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+  }
+  .datagrid td {
+  	padding: 5px 15px;
+  }
+  </style>
+</section>
