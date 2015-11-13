@@ -1,0 +1,77 @@
+<section>
+  <div class="page-header">
+    <h1>Subcategories for {{cat}}</h1>
+  </div>
+  <div class="col-xs-12">
+    <div class="alert alert-warning text-center" ng-show="!addNew">
+      <a ng-click="add()" ng-enabled="selected !== null">Add new subcategory</a>
+    </div>
+    <form name="newForm" ng-show="addNew" class="form-inline new-form" ng-submit="submit(newForm.$valid)" novalidate>
+    <fieldset>
+      <div class="form-group" show-errors>
+        <input name="subcategory" type="text" ng-model="subcategory" id="newItem" class="form-control" placeholder="Subcategory" required>
+        <div ng-messages="newForm.subcategory.$error" role="alert">
+          <p class="help-block error-text" ng-message="required">Subcategory required.</p>
+        </div>
+      </div>
+      <div class="form-group">
+        <input type="submit" class="btn btn-default">
+      </div>
+      <div class="form-group">
+        <input type="button" class="btn btn-default" value="Cancel" ng-click="cancel()">
+      </div>
+    </fieldset>
+    </form>
+    <table class="table-bordered datagrid">
+    <tr ng-repeat="item in items | orderBy:['-isactive', 'subcategory']">
+      <td ng-show="item !== selected">{{item.subcategory}}</td>
+      <td ng-show="item !== selected">{{item.isactive ? "Active" : "Inactive"}}</td>
+      <td ng-show="selected === null && !addNew"><a class="btn btn-primary" ng-click="editItem(item)">
+          <i class="glyphicon glyphicon-edit"></i>
+        </a>
+        <a class="btn btn-primary" ng-click="delete(item)">
+          <i class="glyphicon glyphicon-trash"></i>
+        </a>
+      </td>
+      <td colspan="2" ng-show="selected === item && !addNew">
+        <form name="editForm" class="form-inline" ng-submit="update(editForm.$valid)" novalidate>
+          <table>
+          <tr>
+            <td>
+              <input name="subcategory" type="text" ng-model="editOrig.subcategory" id="editItem" class="form-control" required>
+              <div ng-messages="editForm.subcategory.$error" role="alert">
+                <p class="help-block error-text" ng-message="required">Subcategory required.</p>
+              </div>
+              </td>
+              <td>
+                <input type="checkbox" ng-model="editOrig.isactive" ng-checked="{{editOrig.isactive}}">
+              </td>
+              <td>
+                <div class="form-group">
+              <input type="submit" value="Save" class="btn btn-default">
+            </div>
+            <div class="form-group">
+              <input type="button" class="btn btn-default" value="Cancel" ng-click="cancel($index)">
+            </div>
+              </td>
+            </tr>
+          </table>  
+        </form>
+      </td>
+      
+    </tr>
+    </table>
+  </div>
+  <style>
+  .new-form {
+    padding: 15px;
+    padding-left: 0;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+  }
+  .datagrid td {
+    padding: 5px 15px;
+  }
+  </style>
+</section>

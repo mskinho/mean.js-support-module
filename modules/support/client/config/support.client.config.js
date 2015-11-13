@@ -16,5 +16,11 @@ angular.module('support').run(['Menus',
 			title: 'Locations',
 			state: 'support.locations'
 		});
+
+		// Add the drop down for categories
+		Menus.addSubMenuItem('topbar', 'support', {
+			title: 'Categories & Issues',
+			state: 'support.categories'
+		});
 	}
 ]);

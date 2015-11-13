@@ -5,104 +5,104 @@
  */
 var path = require('path'),
   mongoose = require('mongoose'),
-  Location = mongoose.model('Location'),
+  Category = mongoose.model('Category'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
 
 /**
- * Create a location
+ * Create a category
  */
 exports.create = function (req, res) {
-  var location = new Location(req.body);
+  var category = new Category(req.body);
 
-  location.save(function (err) {
+  category.save(function (err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.json(location);
+      res.json(category);
     }
   }); 
 };
 
 /**
- * Show the current location
+ * Show the current category
  */
 exports.read = function (req, res) {
-  res.json(req.location);
+  res.json(req.category);
 };
 
 /**
- * Update a location
+ * Update a category
  */
 exports.update = function (req, res) {
-  var location = req.location;
+  var category = req.category;
 
-  location.location = req.body.location;
-  location.isactive = req.body.isactive;
+  category.name = req.body.name;
+  category.isactive = req.body.isactive;
 
-  location.save(function (err) {
+  category.save(function (err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.json(location);
+      res.json(category);
     }
   }); 
 };
 
 /**
- * Delete a location
+ * Delete a category
  */
 exports.delete = function (req, res) {
-  var location = req.location;
+  var category = req.category;
 
-  location.remove(function (err) {
+  category.remove(function (err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.json(location);
+      res.json(category);
     }
   }); 
 };
 
 /**
- * List of Locations
+ * List of categories
  */
 exports.list = function (req, res) {
-  Location.find().sort('-isactive').exec(function (err, locations) {
+  Category.find().sort('-isactive').exec(function (err, categories) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.json(locations);
+      res.json(categories);
     }
   }); 
 };
 
 /**
- * Location middleware
+ * category middleware
  */
-exports.locationByID = function (req, res, next, id) {
+exports.categoryByID = function (req, res, next, id) {
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).send({
-      message: 'Location is invalid'
+      message: 'category is invalid'
     });
   }
 
-  Location.findById(id).exec(function (err, location) {
+  Category.findById(id).exec(function (err, category) {
     if (err) {
       return next(err);
-    } else if (!location) {
+    } else if (!category) {
       return res.status(400).send({
-        message: 'No location with that identifier has been found'
+        message: 'No category with that identifier has been found'
       });
     }
-    req.location = location;
+    req.category = category;
     next();
   }); 
 };

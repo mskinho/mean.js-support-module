@@ -5,104 +5,105 @@
  */
 var path = require('path'),
   mongoose = require('mongoose'),
-  Location = mongoose.model('Location'),
+  Issue = mongoose.model('Issue'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
 
 /**
- * Create a location
+ * Create a issue
  */
 exports.create = function (req, res) {
-  var location = new Location(req.body);
+  var issue = new Issue(req.body);
 
-  location.save(function (err) {
+  issue.save(function (err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.json(location);
+      res.json(issue);
     }
   }); 
 };
 
 /**
- * Show the current location
+ * Show the current issue
  */
 exports.read = function (req, res) {
-  res.json(req.location);
+  res.json(req.issue);
 };
 
 /**
- * Update a location
+ * Update a issue
  */
 exports.update = function (req, res) {
-  var location = req.location;
+  var issue = req.issue;
 
-  location.location = req.body.location;
-  location.isactive = req.body.isactive;
+  issue.name = req.body.name;
+  issue.isactive = req.body.isactive;
+  issue.parentSubcategory = req.body.parentSubcategory;
 
-  location.save(function (err) {
+  issue.save(function (err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.json(location);
+      res.json(issue);
     }
   }); 
 };
 
 /**
- * Delete a location
+ * Delete a issue
  */
 exports.delete = function (req, res) {
-  var location = req.location;
+  var issue = req.issue;
 
-  location.remove(function (err) {
+  issue.remove(function (err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.json(location);
+      res.json(issue);
     }
   }); 
 };
 
 /**
- * List of Locations
+ * List of issues
  */
 exports.list = function (req, res) {
-  Location.find().sort('-isactive').exec(function (err, locations) {
+  Issue.find().sort('-isactive').exec(function (err, issues) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.json(locations);
+      res.json(issues);
     }
   }); 
 };
 
 /**
- * Location middleware
+ * issue middleware
  */
-exports.locationByID = function (req, res, next, id) {
+exports.issueByID = function (req, res, next, id) {
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).send({
-      message: 'Location is invalid'
+      message: 'issue is invalid'
     });
   }
 
-  Location.findById(id).exec(function (err, location) {
+  Issue.findById(id).exec(function (err, issue) {
     if (err) {
       return next(err);
-    } else if (!location) {
+    } else if (!issue) {
       return res.status(400).send({
-        message: 'No location with that identifier has been found'
+        message: 'No issue with that identifier has been found'
       });
     }
-    req.location = location;
+    req.issue = issue;
     next();
   }); 
 };

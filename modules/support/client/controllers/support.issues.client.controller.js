@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('support').controller('LocationsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Locations',
-	function ($scope, $stateParams, $location, Authentication, Locations) {
+angular.module('support').controller('IssuesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Issues',
+	function ($scope, $stateParams, $location, Authentication, Issues) {
 		$scope.authentication = Authentication;
 
 		$scope.addNew = false;
@@ -10,17 +10,16 @@ angular.module('support').controller('LocationsController', ['$scope', '$statePa
 		$scope.editOrig = null;
 
 		// Get list of items
-		//$scope.find = function() {
-		//	$scope.items = Locations.query();
-		//};
-		$scope.items = Locations.query();
+		$scope.find = function() {
+			$scope.items = Issues.query();
+		};
 
 		$scope.add = function() {
 			$scope.addNew = !$scope.addNew;
 			//focus('newLocation');
 		};
 
-		// Create a new location
+		// Create a new item
 		$scope.submit = function(isValid) {
 			$scope.error = null;
 
@@ -30,15 +29,16 @@ angular.module('support').controller('LocationsController', ['$scope', '$statePa
 				return false;
 			}
 
-			var location = new Locations({
-				location: this.location,
-				isactive: true
+			var issue = new Issues({
+				issue: this.issue,
+				isactive: true,
+				parentSubcategory: $scope.selectedSubcategory
 			});
 
-			location.$save(function (response) {
-				$scope.location = '';
+			issue.$save(function (response) {
+				$scope.issue = '';
 				$scope.addNew = false;
-				$scope.items.push(location);
+				$scope.items.push(issue);
 			}, function (errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});
@@ -49,7 +49,7 @@ angular.module('support').controller('LocationsController', ['$scope', '$statePa
 			$scope.selected = item;
 		};
 
-		// Update an existing location
+		// Update an existing item
 		$scope.update = function (isValid) {
 			$scope.error = null;
 
@@ -59,12 +59,12 @@ angular.module('support').controller('LocationsController', ['$scope', '$statePa
 				return false;
 			}
 
-			var location = $scope.editOrig;
+			var issue = $scope.editOrig;
 
-			location.$update({id: location.id});
+			issue.$update({id: issue.id});
 			
 			$scope.selected = null;
-			$scope.items = Locations.query();
+			$scope.items = Issues.query();
 		};
 
 		// Cancel a submit or updated
@@ -77,21 +77,21 @@ angular.module('support').controller('LocationsController', ['$scope', '$statePa
 			}
 		};
 
-		// Cancel the creation of a new location
+		// Cancel the creation of a new item
 		var _cancelNew = function() {
 			$scope.addNew = false;
 		};
 
-		// Cancel the editing of an existing location
+		// Cancel the editing of an existing item
 		var _cancelEdit = function(idx) {
 			$scope.selected = null;
 			angular.copy($scope.editOrig, $scope.items[idx]);
 		};
 
-		// Delete an existing location
+		// Delete an existing item
 		$scope.delete = function (item) {
 			if (item) {
-				item.$remove({id: location.id});
+				item.$remove({id: item.id});
 				for (var i in $scope.items) {
 					if ($scope.items[i] === item) {
 						$scope.items.splice(i, 1);
@@ -99,7 +99,7 @@ angular.module('support').controller('LocationsController', ['$scope', '$statePa
 				}
 			} else {
 				$scope.location.$remove(function() {
-					$location.path('support.locations');
+					$location.path('support.issues');
 				});
 			}
 		};
