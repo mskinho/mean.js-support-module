@@ -20,6 +20,12 @@ acl = new acl(new acl.memoryBackend());
  		}, {
  			resources: '/api/support/issues/:issueId',
  			permissions: '*'	
+ 		}, {
+ 			resources: '/api/support/:category/:subcategory/issues',
+ 			permissions: '*'
+ 		}, {
+ 			resources: '/api/support/:category/:subcategory/issues/:issueid',
+ 			permissions: '*'
  		}]
  	}]);
  };

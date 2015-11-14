@@ -3,8 +3,13 @@
     <h1>Subcategories for {{cat}}</h1>
   </div>
   <div class="col-xs-12">
-    <div class="alert alert-warning text-center" ng-show="!addNew">
-      <a ng-click="add()" ng-enabled="selected !== null">Add new subcategory</a>
+    <div class="row">
+      <div class="alert alert-warning text-center col-xs-6" ng-show="!addNew">
+        <a ng-click="add()" ng-enabled="selected !== null">Add new subcategory</a>
+      </div>
+      <div class="alert alert-info text-center col-xs-3 pull-right">
+        <a ui-sref="support.categories">Back to categories</a>
+      </div>
     </div>
     <form name="newForm" ng-show="addNew" class="form-inline new-form" ng-submit="submit(newForm.$valid)" novalidate>
     <fieldset>
@@ -23,10 +28,13 @@
     </fieldset>
     </form>
     <table class="table-bordered datagrid">
-    <tr ng-repeat="item in items | orderBy:['-isactive', 'subcategory']">
+    <tr ng-repeat="item in items | filter: {parentCategory: cat} | orderBy:['-isactive', 'subcategory']">
       <td ng-show="item !== selected">{{item.subcategory}}</td>
       <td ng-show="item !== selected">{{item.isactive ? "Active" : "Inactive"}}</td>
-      <td ng-show="selected === null && !addNew"><a class="btn btn-primary" ng-click="editItem(item)">
+      <td ng-show="selected === null && !addNew">
+      <a ui-sref="support.issues({category: cat, subcategory: item.subcategory})">
+        Issues</a>
+      <a class="btn btn-primary" ng-click="editItem(item)">
           <i class="glyphicon glyphicon-edit"></i>
         </a>
         <a class="btn btn-primary" ng-click="delete(item)">
@@ -51,7 +59,7 @@
               <input type="submit" value="Save" class="btn btn-default">
             </div>
             <div class="form-group">
-              <input type="button" class="btn btn-default" value="Cancel" ng-click="cancel($index)">
+              <input type="button" class="btn btn-default" value="Cancel" ng-click="cancel()">
             </div>
               </td>
             </tr>

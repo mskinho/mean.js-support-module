@@ -64,16 +64,20 @@ angular.module('support').controller('LocationsController', ['$scope', '$statePa
 			location.$update({id: location.id});
 			
 			$scope.selected = null;
-			$scope.items = Locations.query();
+			for (var i in $scope.items) {
+				if ($scope.items[i] === $scope.selected) {
+					$scope.items[i] = $scope.editOrig;
+				}
+			}
 		};
 
 		// Cancel a submit or updated
-		$scope.cancel = function(idx) {
-			if (idx === undefined)
+		$scope.cancel = function() {
+			if ($scope.selected === null)
 			{
 				_cancelNew();
 			} else {
-				_cancelEdit(idx);
+				_cancelEdit();
 			}
 		};
 
@@ -83,9 +87,9 @@ angular.module('support').controller('LocationsController', ['$scope', '$statePa
 		};
 
 		// Cancel the editing of an existing location
-		var _cancelEdit = function(idx) {
+		var _cancelEdit = function() {
+			$scope.selected = $scope.editOrig;
 			$scope.selected = null;
-			angular.copy($scope.editOrig, $scope.items[idx]);
 		};
 
 		// Delete an existing location

@@ -3,8 +3,10 @@
     <h1>Categories</h1>
   </div>
   <div class="col-xs-12">
-    <div class="alert alert-warning text-center" ng-show="!addNew">
-      <a ng-click="add()">Add new category</a>
+    <div class="row">
+      <div class="alert alert-warning text-center col-xs-8" ng-show="!addNew">
+        <a ng-click="add()">Add new category</a>
+      </div>
     </div>
     <form name="newForm" ng-show="addNew" class="form-inline new-form" ng-submit="submit(newForm.$valid)" novalidate>
     <fieldset>
@@ -54,7 +56,7 @@
               <input type="submit" value="Save" class="btn btn-default">
             </div>
             <div class="form-group">
-              <input type="button" class="btn btn-default" value="Cancel" ng-click="cancel($index)">
+              <input type="button" class="btn btn-default" value="Cancel" ng-click="cancel()">
             </div>
               </td>
             </tr>

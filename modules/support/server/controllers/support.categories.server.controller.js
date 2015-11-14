@@ -38,7 +38,7 @@ exports.read = function (req, res) {
 exports.update = function (req, res) {
   var category = req.category;
 
-  category.name = req.body.name;
+  category.category = req.body.category;
   category.isactive = req.body.isactive;
 
   category.save(function (err) {

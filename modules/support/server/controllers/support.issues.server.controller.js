@@ -38,7 +38,7 @@ exports.read = function (req, res) {
 exports.update = function (req, res) {
   var issue = req.issue;
 
-  issue.name = req.body.name;
+  issue.issue = req.body.issue;
   issue.isactive = req.body.isactive;
   issue.parentSubcategory = req.body.parentSubcategory;
 

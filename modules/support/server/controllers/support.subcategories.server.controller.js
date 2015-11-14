@@ -38,7 +38,7 @@ exports.read = function (req, res) {
 exports.update = function (req, res) {
   var subcategory = req.subcategory;
 
-  subcategory.name = req.body.name;
+  subcategory.subcategory = req.body.subcategory;
   subcategory.isactive = req.body.isactive;
   subcategory.parentCategory = req.body.parentCategory;
 
@@ -75,7 +75,7 @@ console.log(req.subcategoryId);
  * List of subcategories
  */
 exports.list = function (req, res) {
-  Subcategory.find({parentCategory: req.category}).lean().exec(function (err, categories) {
+  Subcategory.find().exec(function (err, categories) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
@@ -84,13 +84,6 @@ exports.list = function (req, res) {
         return res.json(categories);
     }
   }); 
-};
-
-exports.category = function (req, res, next, cat) {
-  if (cat) { 
-      req.category = cat;
-      next();
-  } 
 };
 
 exports.subcategoryByID = function (req, res, next, id) {

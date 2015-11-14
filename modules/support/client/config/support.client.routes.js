@@ -28,7 +28,7 @@ angular.module('support').config(['$stateProvider',
 				roles: ['admin']
 			})
 			.state('support.issues', {
-				url:'/:categoryId/:subcategoryId/issues',
+				url:'/:category/:subcategory/issues',
 				templateUrl: 'modules/support/client/views/support.issues.client.view.html',
 				roles: ['admin']
 			});

@@ -9,6 +9,9 @@ angular.module('support').controller('IssuesController', ['$scope', '$stateParam
 		$scope.selected = null;
 		$scope.editOrig = null;
 
+		$scope.cat = $stateParams.category;
+		$scope.subCat = $stateParams.subcategory;
+
 		// Get list of items
 		$scope.find = function() {
 			$scope.items = Issues.query();
@@ -32,7 +35,7 @@ angular.module('support').controller('IssuesController', ['$scope', '$stateParam
 			var issue = new Issues({
 				issue: this.issue,
 				isactive: true,
-				parentSubcategory: $scope.selectedSubcategory
+				parentSubcategory: $scope.subCat
 			});
 
 			issue.$save(function (response) {
@@ -63,17 +66,22 @@ angular.module('support').controller('IssuesController', ['$scope', '$stateParam
 
 			issue.$update({id: issue.id});
 			
+			for (var i in $scope.items) {
+				if ($scope.items[i] === $scope.selected) {
+					$scope.items[i] = $scope.editOrig;
+				}
+			}
+
 			$scope.selected = null;
-			$scope.items = Issues.query();
 		};
 
 		// Cancel a submit or updated
-		$scope.cancel = function(idx) {
-			if (idx === undefined)
+		$scope.cancel = function() {
+			if ($scope.selected === null)
 			{
 				_cancelNew();
 			} else {
-				_cancelEdit(idx);
+				_cancelEdit();
 			}
 		};
 
@@ -83,9 +91,9 @@ angular.module('support').controller('IssuesController', ['$scope', '$stateParam
 		};
 
 		// Cancel the editing of an existing item
-		var _cancelEdit = function(idx) {
+		var _cancelEdit = function() {
+			$scope.selected = $scope.editOrig;
 			$scope.selected = null;
-			angular.copy($scope.editOrig, $scope.items[idx]);
 		};
 
 		// Delete an existing item

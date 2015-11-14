@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('support').controller('SubcategoriesController', ['$scope', '$q', '$state', '$stateParams', '$location', 'Authentication', 'Subcategories', 'SubcategoriesExtra',
-	function ($scope, $q, $state, $stateParams, $location, Authentication, Subcategories, SubcategoriesExtra) {
+angular.module('support').controller('SubcategoriesController', ['$scope', '$q', '$state', '$stateParams', '$location', 'Authentication', 'Subcategories', 
+	function ($scope, $q, $state, $stateParams, $location, Authentication, Subcategories) {
 		$scope.authentication = Authentication;
 
 		$scope.addNew = false;
@@ -10,7 +10,8 @@ angular.module('support').controller('SubcategoriesController', ['$scope', '$q',
 		$scope.editOrig = null;
 
 		$scope.cat = $stateParams.category;
-		$scope.items = SubcategoriesExtra.getSubs($scope.cat);
+
+		$scope.items = Subcategories.query();
 
 		$scope.add = function() {
 			$scope.addNew = !$scope.addNew;
@@ -59,18 +60,23 @@ angular.module('support').controller('SubcategoriesController', ['$scope', '$q',
 
 			var subcategory = $scope.editOrig;
 
-			SubcategoriesExtra.update(subcategory._id);
-			
+			subcategory.$update({subcategory: subcategory.id});
+			for (var i in $scope.items) {
+				if ($scope.items[i] === $scope.selected) {
+					$scope.items[i] = $scope.editOrig;
+				}
+			}
+
 			$scope.selected = null;
 		};
 
 		// Cancel a submit or updated
-		$scope.cancel = function(idx) {
-			if (idx === undefined)
+		$scope.cancel = function() {
+			if ($scope.selected === null)
 			{
 				_cancelNew();
 			} else {
-				_cancelEdit(idx);
+				_cancelEdit();
 			}
 		};
 
@@ -80,15 +86,15 @@ angular.module('support').controller('SubcategoriesController', ['$scope', '$q',
 		};
 
 		// Cancel the editing of an existing item
-		var _cancelEdit = function(idx) {
+		var _cancelEdit = function() {
+			$scope.selected = $scope.editOrig;
 			$scope.selected = null;
-			angular.copy($scope.editOrig, $scope.items[idx]);
 		};
 
 		// Delete an existing item
 		$scope.delete = function (item) {
 			if (item) {
-				SubcategoriesExtra.delete(item._id);
+				item.$remove(item._id);
 				for (var i in $scope.items) {
 					if ($scope.items[i] === item) {
 						$scope.items.splice(i, 1);
