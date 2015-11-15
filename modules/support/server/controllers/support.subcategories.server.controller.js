@@ -13,6 +13,7 @@ var path = require('path'),
  */
 exports.create = function (req, res) {
   var subcategory = new Subcategory(req.body);
+  subcategory.subCode = subcategory.subcategory;
 
   subcategory.save(function (err) {
     if (err) {
@@ -38,9 +39,10 @@ exports.read = function (req, res) {
 exports.update = function (req, res) {
   var subcategory = req.subcategory;
 
+  subcategory.subCode = req.body.subcategory;
   subcategory.subcategory = req.body.subcategory;
   subcategory.isactive = req.body.isactive;
-  subcategory.parentCategory = req.body.parentCategory;
+  subcategory.catCode = req.body.catCode;
 
   subcategory.save(function (err) {
     if (err) {

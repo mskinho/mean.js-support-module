@@ -22,5 +22,11 @@ angular.module('support').run(['Menus',
 			title: 'Categories & Issues',
 			state: 'support.categories'
 		});
+
+		// Add the drop down for tickets
+		Menus.addSubMenuItem('topbar', 'support', {
+			title: 'Tickets',
+			state: 'support.tickets'
+		});
 	}
 ]);

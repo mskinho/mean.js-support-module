@@ -9,10 +9,7 @@ angular.module('support').controller('CategoriesController', ['$scope', '$stateP
 		$scope.selected = null;
 		$scope.editOrig = null;
 
-		// Get list of items
-		$scope.find = function() {
-			$scope.items = Categories.query();
-		};
+		$scope.items = Categories.query();
 
 		$scope.add = function() {
 			$scope.addNew = !$scope.addNew;
@@ -62,12 +59,13 @@ angular.module('support').controller('CategoriesController', ['$scope', '$stateP
 
 			category.$update({id: category.id});
 			
-			$scope.selected = null;
 			for (var i in $scope.items) {
 				if ($scope.items[i] === $scope.selected) {
 					$scope.items[i] = $scope.editOrig;
 				}
 			}
+
+			$scope.selected = null;
 		};
 
 		// Cancel a submit or updated

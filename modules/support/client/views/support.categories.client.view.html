@@ -1,4 +1,4 @@
-<section ng-controller="CategoriesController" ng-init="find()">
+<section id="categories">
   <div class="page-header">
     <h1>Categories</h1>
   </div>
@@ -29,7 +29,7 @@
       <td ng-show="item !== selected">{{item.category}}</td>
       <td ng-show="item !== selected">{{item.isactive ? "Active" : "Inactive"}}</td>
       <td ng-show="selected === null && !addNew">
-      <a ui-sref="support.subcategories({category: item.category})">
+      <a ui-sref="support.subcategories({category: item.catCode})">
         Subcategories</a>
       <a class="btn btn-primary" ng-click="editItem(item)">
           <i class="glyphicon glyphicon-edit"></i>

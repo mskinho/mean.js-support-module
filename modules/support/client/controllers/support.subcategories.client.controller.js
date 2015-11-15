@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('support').controller('SubcategoriesController', ['$scope', '$q', '$state', '$stateParams', '$location', 'Authentication', 'Subcategories', 
-	function ($scope, $q, $state, $stateParams, $location, Authentication, Subcategories) {
+angular.module('support').controller('SubcategoriesController', ['$scope', '$q', '$state', '$stateParams', '$location', 'Authentication', 'Subcategories', 'Categories',
+	function ($scope, $q, $state, $stateParams, $location, Authentication, Subcategories, Categories) {
 		$scope.authentication = Authentication;
 
 		$scope.addNew = false;
@@ -10,6 +10,14 @@ angular.module('support').controller('SubcategoriesController', ['$scope', '$q',
 		$scope.editOrig = null;
 
 		$scope.cat = $stateParams.category;
+		Categories.query().$promise.then(function(data) {
+			$scope.prettyCat = null;
+			for (var c = 0 ; c < data.length; c++) {
+				if (data[c].catCode === $scope.cat) {
+					$scope.prettyCat = data[c].category;
+				}
+			}
+		});
 
 		$scope.items = Subcategories.query();
 
@@ -31,7 +39,7 @@ angular.module('support').controller('SubcategoriesController', ['$scope', '$q',
 			var subcategory = new Subcategories({
 				subcategory: this.subcategory,
 				isactive: true,
-				parentCategory: $scope.cat
+				catCode: $scope.cat
 			});
 
 			subcategory.$save(function (response) {

@@ -19,6 +19,7 @@ angular.module('support').config(['$stateProvider',
 			.state('support.categories', {
 				url: '/categories',
 				templateUrl: 'modules/support/client/views/support.categories.client.view.html',
+				controller: 'CategoriesController',
 				roles: ['admin']
 			})
 			.state('support.subcategories', {
@@ -30,7 +31,43 @@ angular.module('support').config(['$stateProvider',
 			.state('support.issues', {
 				url:'/:category/:subcategory/issues',
 				templateUrl: 'modules/support/client/views/support.issues.client.view.html',
+				controller: 'IssuesController',
 				roles: ['admin']
+			})
+			.state('support.tickets', {
+				parent: 'support',
+				url: '/tickets',
+				views: {
+					'': { 
+						templateUrl: 'modules/support/client/views/support.tickets.client.view.html',
+						controller: 'TicketsController' 
+					},
+					'ticketContent@support.tickets': { 
+						templateUrl: 'modules/support/client/views/support.tickets-list.client.view.html',
+						controller: 'TicketsController' 
+					}
+				},
+				data: {
+					roles: ['user', 'admin']
+				}
+			})
+			.state('support.tickets.create', {
+				url: '/create',
+				views: {
+					'ticketContent@support.tickets': {templateUrl: 'modules/support/client/views/support.tickets-create.client.view.html'}
+				},
+				controller: 'TicketsController',
+				data: {
+					roles: ['user', 'admin']
+				}
+			})
+			.state('support.tickets.edit', {
+				url: '/tickets/:ticketId',
+				templateUrl: 'modules/support/client/views/support.tickets-detail.client.view.html',
+				controller: 'TicketsController',
+				data: {
+					roles: ['user', 'admin']
+				}
 			});
 	}
 ]);

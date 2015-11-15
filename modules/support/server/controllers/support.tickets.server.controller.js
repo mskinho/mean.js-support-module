@@ -5,23 +5,22 @@
  */
 var path = require('path'),
   mongoose = require('mongoose'),
-  Location = mongoose.model('Location'),
+  Ticket = mongoose.model('Ticket'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
 
 /**
- * Create a location
+ * Create a ticket
  */
 exports.create = function (req, res) {
-  var location = new Location(req.body);
-  location.locationCode = location.location;
+  var ticket = new Ticket(req.body);
 
-  location.save(function (err) {
+  ticket.save(function (err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.json(location);
+      res.json(ticket);
     }
   }); 
 };
@@ -30,26 +29,31 @@ exports.create = function (req, res) {
  * Show the current location
  */
 exports.read = function (req, res) {
-  res.json(req.location);
+  res.json(req.ticket);
 };
 
 /**
  * Update a location
  */
 exports.update = function (req, res) {
-  var location = req.location;
+  var ticket = req.ticket;
 
-  location.locationCode = req.body.location;
-  location.location = req.body.location;
-  location.isactive = req.body.isactive;
+  ticket.location = req.body.location;
+  ticket.category = req.body.category;
+  ticket.subcategory = req.body.subcategory;
+  ticket.issue = req.body.issue;
+  ticket.description = req.body.description;
+  ticket.notes = req.body.notes;
+  ticket.updated = Date.now;
+  ticket.iscomplete = req.body.iscomplete;
 
-  location.save(function (err) {
+  ticket.save(function (err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.json(location);
+      res.json(ticket);
     }
   }); 
 };
@@ -58,7 +62,7 @@ exports.update = function (req, res) {
  * Delete a location
  */
 exports.delete = function (req, res) {
-  var location = req.location;
+  var ticket = req.ticket;
 
   location.remove(function (err) {
     if (err) {
@@ -66,7 +70,7 @@ exports.delete = function (req, res) {
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.json(location);
+      res.json(ticket);
     }
   }); 
 };
@@ -75,36 +79,36 @@ exports.delete = function (req, res) {
  * List of Locations
  */
 exports.list = function (req, res) {
-  Location.find().sort('-isactive').exec(function (err, locations) {
+  Ticket.find().sort('-iscomplete').exec(function (err, tickets) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.json(locations);
+      res.json(tickets);
     }
   }); 
 };
 
 /**
- * Location middleware
+ * Ticket middleware
  */
-exports.locationByID = function (req, res, next, id) {
+exports.ticketByID = function (req, res, next, id) {
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).send({
-      message: 'Location is invalid'
+      message: 'Ticket is invalid'
     });
   }
 
-  Location.findById(id).exec(function (err, location) {
+  Ticket.findById(id).exec(function (err, ticket) {
     if (err) {
       return next(err);
     } else if (!location) {
       return res.status(400).send({
-        message: 'No location with that identifier has been found'
+        message: 'No ticket with that identifier has been found'
       });
     }
-    req.location = location;
+    req.ticket = ticket;
     next();
   }); 
 };

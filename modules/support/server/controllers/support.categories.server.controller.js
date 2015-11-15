@@ -13,6 +13,7 @@ var path = require('path'),
  */
 exports.create = function (req, res) {
   var category = new Category(req.body);
+  category.catCode = category.category;
 
   category.save(function (err) {
     if (err) {
@@ -38,6 +39,7 @@ exports.read = function (req, res) {
 exports.update = function (req, res) {
   var category = req.category;
 
+  category.catCode = req.body.category;
   category.category = req.body.category;
   category.isactive = req.body.isactive;
 

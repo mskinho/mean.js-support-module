@@ -7,6 +7,10 @@ angular.module('support').factory('Subcategories', ['$resource', function($resou
 	}, {
 		update: {
 			method: 'PUT'
+		},
+		get: {
+			method: 'GET',
+			isArray: true
 		}
 	});
 }]);

@@ -13,6 +13,7 @@ var path = require('path'),
  */
 exports.create = function (req, res) {
   var issue = new Issue(req.body);
+  issue.issueCode = issue.issue;
 
   issue.save(function (err) {
     if (err) {
@@ -38,6 +39,7 @@ exports.read = function (req, res) {
 exports.update = function (req, res) {
   var issue = req.issue;
 
+  issue.issueCode = req.body.issue;
   issue.issue = req.body.issue;
   issue.isactive = req.body.isactive;
   issue.parentSubcategory = req.body.parentSubcategory;

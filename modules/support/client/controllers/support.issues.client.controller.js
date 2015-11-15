@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('support').controller('IssuesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Issues',
-	function ($scope, $stateParams, $location, Authentication, Issues) {
+angular.module('support').controller('IssuesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Issues', 'Categories', 'Subcategories',
+	function ($scope, $stateParams, $location, Authentication, Issues, Categories, Subcategories) {
 		$scope.authentication = Authentication;
 
 		$scope.addNew = false;
@@ -11,11 +11,24 @@ angular.module('support').controller('IssuesController', ['$scope', '$stateParam
 
 		$scope.cat = $stateParams.category;
 		$scope.subCat = $stateParams.subcategory;
+		Categories.query().$promise.then(function(data) {
+			$scope.prettyCat = null;
+			for (var c = 0 ; c < data.length; c++) {
+				if (data[c].catCode === $scope.cat) {
+					$scope.prettyCat = data[c].category;
+				}
+			}
+		});
+		Subcategories.query().$promise.then(function(data) {
+			$scope.prettySub = null;
+			for (var s = 0; s < data.length; s++) {
+				if (data[s].subCode === $scope.subCat && data[s].catCode === $scope.cat) {
+					$scope.prettySub = data[s].subcategory
+				}
+			}
+		});
 
-		// Get list of items
-		$scope.find = function() {
-			$scope.items = Issues.query();
-		};
+		$scope.items = Issues.query();
 
 		$scope.add = function() {
 			$scope.addNew = !$scope.addNew;
@@ -35,7 +48,8 @@ angular.module('support').controller('IssuesController', ['$scope', '$stateParam
 			var issue = new Issues({
 				issue: this.issue,
 				isactive: true,
-				parentSubcategory: $scope.subCat
+				catCode: $scope.cat,
+				subCode: $scope.subCat
 			});
 
 			issue.$save(function (response) {
