@@ -13,6 +13,10 @@ var path = require('path'),
  */
 exports.create = function (req, res) {
   var ticket = new Ticket(req.body);
+  console.log(req.query);
+  ticket.createdBy = req.user;
+  console.log(ticket);
+
 
   ticket.save(function (err) {
     if (err) {
@@ -38,13 +42,14 @@ exports.read = function (req, res) {
 exports.update = function (req, res) {
   var ticket = req.ticket;
 
-  ticket.location = req.body.location;
-  ticket.category = req.body.category;
-  ticket.subcategory = req.body.subcategory;
+  ticket.locationCode = req.body.location;
+  ticket.catCode = req.body.category;
+  ticket.subCode = req.body.subcategory;
   ticket.issue = req.body.issue;
   ticket.description = req.body.description;
   ticket.notes = req.body.notes;
   ticket.updated = Date.now;
+  ticket.updatedBy = req.user;
   ticket.iscomplete = req.body.iscomplete;
 
   ticket.save(function (err) {

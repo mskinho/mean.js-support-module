@@ -23,7 +23,7 @@ angular.module('support').controller('IssuesController', ['$scope', '$stateParam
 			$scope.prettySub = null;
 			for (var s = 0; s < data.length; s++) {
 				if (data[s].subCode === $scope.subCat && data[s].catCode === $scope.cat) {
-					$scope.prettySub = data[s].subcategory
+					$scope.prettySub = data[s].subcategory;
 				}
 			}
 		});

@@ -2,21 +2,27 @@
 	<form name="newForm" class="form-inline new-form" ng-submit="submit(newForm.$valid)" novalidate>
     <fieldset>
       <div class="form-group col-xs-12" show-errors>
+      	<label for="locationSelect">Location:</label></br />
+      	<select name="locationSelect" id="locationSelect" ng-model="newItem.locationCode">
+      		<option ng-repeat="option in locations | filter: {isactive: true}" value="{{option.locationCode}}">{{option.location}}</option>
+      	</select>
+      </div>
+      <div class="form-group col-xs-12" show-errors>
       	<label for="categorySelect">Category:</label><br />
-		<select name="categorySelect" id="categorySelect" ng-model="newItem.category">
-  			<option ng-repeat="option in categories" value="{{option.category}}">{{option.category}}</option>
+		<select name="categorySelect" id="categorySelect" ng-model="newItem.catCode">
+  			<option ng-repeat="option in categories | filter: {isactive: true}" value="{{option.catCode}}">{{option.category}}</option>
 		</select>
       </div>
       <div class="form-group col-xs-12">
       	<label for="subSelect">Subcategory</label><br />
-		<select name="subSelect" id="subSelect" ng-model="newItem.subcategory">
-  			<option ng-repeat="option in subcategories | filter: {parentCategory: newItem.category}" value="{{option.subcategory}}">{{option.subcategory}}</option>
+		<select name="subSelect" id="subSelect" ng-disabled="newItem.catCode === undefined" ng-model="newItem.subCode">
+  			<option ng-repeat="option in subcategories | filter: {catCode: newItem.catCode, isactive: true}" value="{{option.subCode}}">{{option.subcategory}}</option>
 		</select>
       </div>
       <div class="form-group col-xs-12">
       	<label for="issueSelect">Issue</label><br />
-		<select name="issueSelect" id="categorySelect" ng-model="newItem.issue">
-  			<option ng-repeat="option in data.availableOptions" value="{{option.issue}}">{{option.issue}}</option>
+		<select name="issueSelect" id="categorySelect" ng-model="newItem.issueCode" ng-disabled="newItem.subCode === undefined">
+  			<option ng-repeat="option in issues | filter: {catCode: newItem.catCode, subCode: newItem.subCode, isactive: true}" value="{{option.issueCode}}">{{option.issue}}</option>
 		</select>
       </div>
       <div class="form-group col-xs-12" show-errors>

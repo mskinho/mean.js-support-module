@@ -32,7 +32,7 @@
       <td ng-show="item !== selected">{{item.subcategory}}</td>
       <td ng-show="item !== selected">{{item.isactive ? "Active" : "Inactive"}}</td>
       <td ng-show="selected === null && !addNew">
-      <a ui-sref="support.issues({category: cat, subcategory: item.subcategory})">
+      <a ui-sref="support.issues({category: item.catCode, subcategory: item.subCode})">
         Issues</a>
       <a class="btn btn-primary" ng-click="editItem(item)">
           <i class="glyphicon glyphicon-edit"></i>

@@ -11,22 +11,25 @@ var mongoose = require('mongoose'),
  */
 var TicketSchema = new Schema({
 	location: {
-		type: String,
-		trim: true
+		type: Schema.ObjectId,
+		ref: 'Location'
 	},
 	category: {
-		type: String
-	}, 
+		type: Schema.ObjectId,
+		ref: 'Category'
+	},
 	subcategory: {
-		type: String
+		type: Schema.ObjectId,
+		ref: 'Subcategory'
 	},
 	issue: {
-		type: String
+		type: Schema.ObjectId,
+		ref: 'Issue'
 	},
 	description: {
 		type: String,
 		trim: true,
-		required: "Description can not be empty"
+		required: 'Description can not be empty'
 	},
 	notes: {
 		type: Array,
@@ -37,14 +40,16 @@ var TicketSchema = new Schema({
 		default: Date.now
 	},
 	createdBy: {
-		type: String
+		type: Schema.ObjectId,
+		ref: 'User'
 	},
 	updated: {
 		type: Date,
 		default: Date.now
 	},
 	updatedBy: {
-		type: String
+		type: Schema.ObjectId,
+		ref: 'User'
 	},
 	iscomplete: {
 		type: Boolean,
