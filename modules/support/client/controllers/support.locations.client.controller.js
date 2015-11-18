@@ -63,12 +63,14 @@ angular.module('support').controller('LocationsController', ['$scope', '$statePa
 
 			location.$update({id: location.id});
 			
-			$scope.selected = null;
+			
 			for (var i in $scope.items) {
 				if ($scope.items[i] === $scope.selected) {
 					$scope.items[i] = $scope.editOrig;
 				}
 			}
+
+			$scope.selected = null;
 		};
 
 		// Cancel a submit or updated

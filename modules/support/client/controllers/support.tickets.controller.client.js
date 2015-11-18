@@ -8,6 +8,8 @@ angular.module('support').controller('TicketsController', ['$scope', '$statePara
 	$scope.issues = Issues.query();	
 	$scope.locations = Locations.query();
 
+	$scope.items = Tickets.query();
+
 	$scope.submit = function(isValid) {
 		$scope.error = null;
 
@@ -50,14 +52,12 @@ angular.module('support').controller('TicketsController', ['$scope', '$statePara
 			}
 		}
 
-console.log(selectedLocation);
-		
 		var ticket = new Tickets({
 			location: selectedLocation,
 			category: selectedCategory,
 			subcategory: selectedSubcategory,
 			issue: selectedIssue,
-			description: this.description  
+			description: this.newItem.description  
 		});
 
 		ticket.$save(function (response) {

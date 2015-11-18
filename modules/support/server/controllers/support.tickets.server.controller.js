@@ -13,13 +13,13 @@ var path = require('path'),
  */
 exports.create = function (req, res) {
   var ticket = new Ticket(req.body);
-  console.log(req.query);
   ticket.createdBy = req.user;
   console.log(ticket);
 
 
   ticket.save(function (err) {
     if (err) {
+      console.log(err);
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
@@ -81,10 +81,14 @@ exports.delete = function (req, res) {
 };
 
 /**
- * List of Locations
+ * List of Tickets
  */
 exports.list = function (req, res) {
-  Ticket.find().sort('-iscomplete').exec(function (err, tickets) {
+  Ticket.find().sort('-iscomplete').
+  populate('location').
+  populate('category').
+  populate('subcategory').
+  populate('issue').exec(function (err, tickets) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)

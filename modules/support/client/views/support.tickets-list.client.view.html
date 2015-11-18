@@ -3,8 +3,10 @@
 </div>
 <div id="ticket-holder" ng-repeat="item in items">
 	<div class="ticket">
-		<h3>{{item.category}}</h3>
-		<h4>{{item.subcategory}}</h4>
-		<h4>{{item.issue}}</h4>
+		<h3>{{item.location.locationCode}}</h3>
+		<h3>{{item.category.category}}</h3>
+		<h4>{{item.subcategory.subcategory}}</h4>
+		<h4>{{item.issue.issue}}</h4>
+		<p ng-bind="{{item.createdBy.displayName}}"> on <span ng-bind="{{item.createdBy.created}}" /></p>
 	</div>
 </div>
